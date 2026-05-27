@@ -20,7 +20,6 @@
 
   <img height="180em" src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=Great-Hyw&layout=compact&langs_count=8&theme=tokyonight"/>
 </p>
----
 
 
 
@@ -31,7 +30,13 @@
   <h3>🌤 江西抚州 · 实时天气</h3>
   <img src="https://wttr.in/Fuzhou?style=4&lang=zh-cn" alt="Weather" width="400" />
 </div>
----
+
+
+  <div align="center">
+  <h3>🌤 江西抚州 · 实时天气</h3>
+  <!-- 直接引用 wttr.in 的实时图片，不依赖本地文件 -->
+  <img src="https://wttr.in/Fuzhou?style=4&lang=zh-cn" alt="抚州天气" width="400" />
+</div>
 
 
 ## 🔥 连续提交记录
