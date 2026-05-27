@@ -52,3 +52,7 @@
 <h3>🌤 江西抚州 · 实时天气</h3>
 <img src="https://wttr.wtf/Fuzhou?style=4&lang=zh-cn" alt="抚州天气" width="400" />
 </div>
+<div align="center">
+<h3>🌤 江西抚州 · 实时天气</h3>
+<img src="https://wttr.wtf/Fuzhou?style=4&lang=zh-cn" alt="抚州天气" width="400" />
+</div>
