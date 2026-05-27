@@ -46,38 +46,10 @@
   <img src="https://raw.githubusercontent.com/Great-Hyw/Great-Hyw/output/github-contribution-grid-snake.svg" alt="snake" />
 </p>
 
-### ⚙️ 配置贪吃蛇动画
 
-在仓库 `.github/workflows/` 目录下创建 `snake.yml`
 
-```yaml
-name: generate animation
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Great-Hyw/Great-Hyw/output/github-contribution-grid-snake.svg" />
+</p>
 
-on:
-  schedule:
-    - cron: "0 */12 * * *"
-  workflow_dispatch:
 
-jobs:
-  generate:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - name: generate github-contribution-grid-snake.svg
-        uses: Platane/snk/svg-only@v3
-        with:
-          github_user_name: Great-Hyw
-          outputs: |
-            dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
-
-      - name: push github-contribution-grid-snake.svg to the output branch
-        uses: crazy-max/ghaction-github-pages@v3.1.0
-        with:
-          target_branch: output
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
