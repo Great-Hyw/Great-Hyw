@@ -25,7 +25,7 @@
 ## 🌈 江西抚州天气
 
 <!-- 替换 YOUR_API_KEY 和 YOUR_CITY -->
-<img src="https://realtime-weather-card.vercel.app/api?city=48df4d770f254a4eb5161916262705&lang=zh&theme=dark&apiKey=48df4d770f254a4eb5161916262705" alt="Realtime Weather" />
+<img src="https://realtime-weather-card.vercel.app/api?city=Fuzhou&apikey=48df4d770f254a4eb5161916262705" alt="Weather" />
 ## 🔥 连续提交记录
 
 <p align="center">
