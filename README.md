@@ -26,11 +26,11 @@
 
 
 <!-- 这里会自动显示 GitHub Actions 生成的天气 -->
-<div align="center">
-## 🌤️ 江西抚州 · 实时天气
-<img src="https://wttr.in/Fuzhou.png?style=3&lang=zh-cn" alt="Weather" />
-</div>
 
+<div align="center">
+  <h3>🌤 江西抚州 · 实时天气</h3>
+  <img src="https://wttr.in/Fuzhou?style=4&lang=zh-cn" alt="Weather" width="400" />
+</div>
 ---
 
 
