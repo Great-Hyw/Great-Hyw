@@ -15,7 +15,7 @@
 
 <p align="center">
   <a href="https://github.com/saadeghi/daisyui">
-    <img src="https://wttr.in/SaltLakeCity.png?m" alt="weather" />
+    <img src="https://wttr.in/Jiangxi.png?m" alt="weather" />
   </a>
 </p>
 
