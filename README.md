@@ -22,13 +22,11 @@
 </p>
 ---
 
-
-## 🌦️ Weather
+## 🌦️ 江西抚州 · 实时天气
 
 <p align="center">
-  <img src="https://wttr.in/Beijing.png?lang=zh-cn" />
+  <img src="https://wttr.in/Fuzhou+Jiangxi_0tqp.png?lang=zh-cn" />
 </p>
-
 ## 🔥 连续提交记录
 
 <p align="center">
