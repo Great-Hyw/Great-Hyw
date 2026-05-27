@@ -26,10 +26,8 @@
 
 <!-- 这里会自动显示 GitHub Actions 生成的天气 -->
 
-  <h3>🌤 江西抚州 · 实时天气</h3>
-
-<!-- 引入自动生成的天气文件 -->
-<include src="WEATHER.md"></include>
+  <h3>🌤 江西· 实时天气</h3>
+<!--START_SECTION:weather--><!--END_SECTION:weather-->
 
 
 ## 🔥 连续提交记录
