@@ -1,39 +1,39 @@
-name: Generate Weather Card
+name: Update Weather
 
-# 触发条件：每天早上 8 点和晚上 8 点自动运行（GitHub 时间通常是 UTC，这里简单设置为每天两次）
-# 也可以手动点击运行
 on:
   schedule:
-    - cron: '0 0,12 * * *'
-  workflow_dispatch:
+    - cron: '0 */6 * * *' # 每6小时运行一次
+  workflow_dispatch: # 允许手动运行
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. 下载你的代码
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. 生成天气图片代码
-      # 我们直接生成一段 Markdown 代码，写入到一个叫 WEATHER.md 的文件里
-      - name: Generate Weather Markdown
+      - name: Update Weather in README
         run: |
-          # 定义城市（拼音）
-          CITY="Fuzhou"
+          # 使用国内镜像源
+          WEATHER_IMG="https://wttr.wtf/Fuzhou?style=4&lang=zh-cn"
           
-          # 生成 Markdown 内容
-          # 这里使用了 wttr.in 的卡片模式，加了透明背景参数
-          echo "<div align=\"center\">" > WEATHER.md
-          echo "### 江西抚州实时天气" >> WEATHER.md
-          echo "" >> WEATHER.md
-          echo "<img src=\"https://wttr.in/${CITY}.png?style=3&lang=zh-cn\" alt=\"Weather\" />" >> WEATHER.md
-          echo "</div>" >> WEATHER.md
+          # 生成 Markdown 图片代码
+          WEATHER_MD="<div align=\"center\">
+          <h3>🌤 江西抚州 · 实时天气</h3>
+          <img src=\"$WEATHER_IMG\" alt=\"抚州天气\" width=\"400\" />
+          </div>"
+          
+          # 使用 sed 命令替换 README.md 中的占位符
+          # 请确保你的 README.md 里有一行注释 <!-- weather-start --> 和 <!-- weather-end -->
+          # 如果没有，请手动添加，或者直接用下面的命令替换整个文件（不推荐）
+          
+          # 这里我们采用追加的方式，如果 README 里没有占位符，就直接追加到文件末尾
+          echo "$WEATHER_MD" >> README.md
+          
+          # 如果你想替换掉旧的天气代码，可以用 sed 命令
+          # sed -i '/<!-- weather-start -->/,/<!-- weather-end -->/c\<!-- weather-start -->\n'"$WEATHER_MD"'\n<!-- weather-end -->' README.md
 
-      # 3. 把生成的 WEATHER.md 文件提交回你的仓库
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "chore: 自动更新天气卡片"
-          file_pattern: WEATHER.md
+          commit_message: "chore: 自动更新天气"
