@@ -25,7 +25,7 @@
 ## 🌦️ Weather
 
 <p align="center">
-  <img src="https://github-readme-weather.vercel.app/api/weather?city=Beijing" />
+  <img src="https://img.shields.io/badge/Weather-Beijing-blue?style=for-the-badge&logo=icloud" />
 </p>
 ---
 
