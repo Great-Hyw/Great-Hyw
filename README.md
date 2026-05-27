@@ -13,13 +13,12 @@
 
 ## 🌤️ 实时天气组件
 
+## 🌦️ Weather
+
 <p align="center">
-  <a href="https://github.com/saadeghi/daisyui">
-    <img src="https://wttr.in/Jiangxi.png?m" alt="weather" />
-  </a>
+  <img src="https://github-readme-weather.vercel.app/api/weather?city=Beijing" />
 </p>
 
-> 你可以把 `SaltLakeCity` 改成自己的城市，例如：`Beijing`、`Shanghai`、`Tokyo`。
 
 ---
 
@@ -27,6 +26,7 @@
 
 <p align="center">
   <img height="180em" src="https://github-readme-stats.vercel.app/api?username=Great-Hyw&show_icons=true&theme=tokyonight" />
+  
   <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Great-Hyw&layout=compact&theme=tokyonight" />
 </p>
 
