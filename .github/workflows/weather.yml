@@ -14,7 +14,7 @@ jobs:
       - name: Fetch Weather Data
         run: |
           # 替换为你自己的城市ID（比如南昌的城市ID），可以在心知控制台找到
-          LOCATION_ID="WX4FBXXFKE4F" 
+          LOCATION_ID="WSFWYTUM7M71" 
           
           # 调用API获取实时天气JSON数据
           RESPONSE=$(curl -s "https://api.seniverse.com/v3/weather/now.json?key=${{ secrets.XINZHI_API_KEY }}&location=$LOCATION_ID&language=zh-Hans&unit=c")
