@@ -22,11 +22,12 @@
 </p>
 ---
 
-## 🌈 江西抚州天气
 
-<!-- 替换 YOUR_API_KEY 和 YOUR_CITY -->
-<!-- 尝试把 apikey 改成 key -->
-<img src="https://wttr.in/Fuzhou?style_3&lang=zh-cn" alt="Weather" />
+## 🌤️ 江西抚州 · 实时天气
+
+<p align="center">
+  <img src="https://wttr.in/Fuzhou.png?format=3" />
+</p>
 ## 🔥 连续提交记录
 
 <p align="center">
