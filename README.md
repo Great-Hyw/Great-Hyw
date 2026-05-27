@@ -2,7 +2,7 @@
 
 <img src="https://i.imgur.com/iXuL1HG.gif" width="100%" />
 
-# 🌸 Hi, I'm Great-Hyw 🌸
+# 🌸 Hi, I'm YOUR_NAME 🌸
 
 ### ✨ Anime Lover | Full Stack Developer | AI Enthusiast
 
@@ -15,7 +15,7 @@
 # 🌙 About Me
 
 ```yaml
-name: Great-Hyw
+name: YOUR_NAME
 
 learning:
   - AI
@@ -35,7 +35,7 @@ hobbies:
 
 <div align="center">
 
-<img src="https://skillicons.dev/icons?i=java,javascript,nodejs,git,linux,mysql" />
+<img src="https://skillicons.dev/icons?i=python,javascript,react,nodejs,docker,git,linux,mongodb,mysql,vscode" />
 
 </div>
 
@@ -45,9 +45,9 @@ hobbies:
 
 <div align="center">
 
-<img height="180em" src="https://github-readme-stats.vercel.app/api?username=Great-Hyw&show_icons=true&theme=tokyonight&hide_border=true" />
+<img height="180em" src="https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME&show_icons=true&theme=tokyonight&hide_border=true" />
 
-<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Great-Hyw&layout=compact&theme=tokyonight&hide_border=true" />
+<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_USERNAME&layout=compact&theme=tokyonight&hide_border=true" />
 
 </div>
 
@@ -57,7 +57,7 @@ hobbies:
 
 <div align="center">
 
-<img src="https://streak-stats.demolab.com?user=Great-Hyw&theme=tokyonight&hide_border=true" />
+<img src="https://streak-stats.demolab.com?user=YOUR_USERNAME&theme=tokyonight&hide_border=true" />
 
 </div>
 
@@ -78,7 +78,7 @@ hobbies:
 
 <div align="center">
 
-<a href="https://github.com/Great-Hyw">
+<a href="https://github.com/YOUR_USERNAME">
 <img src="https://img.shields.io/badge/GitHub-111?style=for-the-badge&logo=github&logoColor=white" />
 </a>
 
