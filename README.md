@@ -40,16 +40,11 @@
 
 ---
 
-## 🐍 贪吃蛇贡献图
+
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Great-Hyw/Great-Hyw/output/github-contribution-grid-snake.svg" alt="snake" />
 </p>
 
-
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Great-Hyw/Great-Hyw/output/github-contribution-grid-snake.svg" />
-</p>
 
 
