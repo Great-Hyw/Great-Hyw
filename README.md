@@ -22,10 +22,11 @@
 </p>
 ---
 
-## 🌈 Weather
+
+## 🌦️ Weather
 
 <p align="center">
-  <img src="https://wttr.in/Beijing_0tqp_lang=zh-cn.png" />
+  <img src="https://wttr.in/Jiangxi.png?lang=zh-cn" />
 </p>
 
 ## 🔥 连续提交记录
