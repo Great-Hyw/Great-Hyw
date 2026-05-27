@@ -15,7 +15,7 @@
 # 🌙 About Me
 
 ```yaml
-name: YOUR_NAME
+name: Great-Hyw
 
 learning:
   - AI
