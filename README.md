@@ -23,10 +23,14 @@
 ---
 
 
-## 🌤️ 江西抚州 · 实时天气
+
 
 <!-- 这里会自动显示 GitHub Actions 生成的天气 -->
-<INCLUDE ./WEATHER.md>
+<div align="center">
+## 🌤️ 江西抚州 · 实时天气
+<img src="https://wttr.in/Fuzhou.png?style=3&lang=zh-cn" alt="Weather" />
+</div>
+
 ---
 
 
