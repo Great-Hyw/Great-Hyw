@@ -25,9 +25,8 @@
 
 ## 🌤️ 江西抚州 · 实时天气
 
-<p align="center">
-  <img src="https://wttr.in/Fuzhou.png?format=3" />
-</p>
+<!-- 这里会自动显示 GitHub Actions 生成的天气 -->
+<INCLUDE ./WEATHER.md>
 ---
 
 
