@@ -22,12 +22,11 @@
 </p>
 ---
 
-## 🌦️ Weather
+## 🌈 Weather
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Weather-Beijing-blue?style=for-the-badge&logo=icloud" />
+  <img src="https://wttr.in/Beijing_0tqp_lang=zh-cn.png" />
 </p>
----
 
 ## 🔥 连续提交记录
 
