@@ -1,95 +1,83 @@
-<div align="center">
-
-<img src="https://i.imgur.com/iXuL1HG.gif" width="100%" />
-
-# 🌸 Hi, I'm YOUR_NAME 🌸
-
-### ✨ Anime Lover | Full Stack Developer | AI Enthusiast
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=FF69B4&center=true&vCenter=true&width=500&lines=Welcome+to+my+GitHub!;Anime+%2B+Coding+%3D+Perfect;Building+cool+things+everyday+🚀" />
-
-</div>
+<!-- 顶部标题 -->
+<h1 align="center">Hi 👋, I'm Great-Hyw</h1>
+<h3 align="center">🚀 热爱编程 | 🌤️ 关注天气 | 🐍 GitHub 贡献达人</h3>
 
 ---
 
-# 🌙 About Me
+<!-- 动态打字效果 -->
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&center=true&vCenter=true&width=435&lines=Welcome+to+my+GitHub!;Full+Stack+Developer;Open+Source+Enthusiast;Keep+Learning+Everyday" alt="Typing SVG" />
+</p>
+
+---
+
+## 🌤️ 实时天气组件
+
+<p align="center">
+  <a href="https://github.com/saadeghi/daisyui">
+    <img src="https://wttr.in/SaltLakeCity.png?m" alt="weather" />
+  </a>
+</p>
+
+> 你可以把 `SaltLakeCity` 改成自己的城市，例如：`Beijing`、`Shanghai`、`Tokyo`。
+
+---
+
+## 📊 GitHub 数据统计
+
+<p align="center">
+  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=Great-Hyw&show_icons=true&theme=tokyonight" />
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Great-Hyw&layout=compact&theme=tokyonight" />
+</p>
+
+---
+
+## 🔥 连续提交记录
+
+<p align="center">
+  <img src="https://streak-stats.demolab.com?user=Great-Hyw&theme=tokyonight" />
+</p>
+
+---
+
+## 🐍 贪吃蛇贡献图
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Great-Hyw/Great-Hyw/output/github-contribution-grid-snake.svg" alt="snake" />
+</p>
+
+### ⚙️ 配置贪吃蛇动画
+
+在仓库 `.github/workflows/` 目录下创建 `snake.yml`
 
 ```yaml
-name: YOUR_NAME
+name: generate animation
 
-learning:
-  - AI
-  - Web Development
-  - Open Source
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
 
-hobbies:
-  - Anime
-  - Gaming
-  - Music
-  - Coding
-```
+jobs:
+  generate:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
 
----
+    steps:
+      - name: generate github-contribution-grid-snake.svg
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: Great-Hyw
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
 
-# ⚔️ Tech Stack
-
-<div align="center">
-
-<img src="https://skillicons.dev/icons?i=python,javascript,react,nodejs,docker,git,linux,mongodb,mysql,vscode" />
-
-</div>
-
----
-
-# 📊 GitHub Stats
-
-<div align="center">
-
-<img height="180em" src="https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME&show_icons=true&theme=tokyonight&hide_border=true" />
-
-<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_USERNAME&layout=compact&theme=tokyonight&hide_border=true" />
-
-</div>
-
----
-
-# 🔥 Contribution Streak
-
-<div align="center">
-
-<img src="https://streak-stats.demolab.com?user=YOUR_USERNAME&theme=tokyonight&hide_border=true" />
-
-</div>
-
----
-
-# 🌸 Favorite Anime
-
-| Anime | Character |
-|---|---|
-| Violet Evergarden | Violet |
-| Your Name | Mitsuha |
-| Demon Slayer | Nezuko |
-| Cyberpunk Edgerunners | Lucy |
-
----
-
-# 🌐 Contact
-
-<div align="center">
-
-<a href="https://github.com/YOUR_USERNAME">
-<img src="https://img.shields.io/badge/GitHub-111?style=for-the-badge&logo=github&logoColor=white" />
-</a>
-
-</div>
-
----
-
-<div align="center">
-
-### ✨ Thanks for visiting ✨
-
-<img src="https://media.tenor.com/qJ5evVs-_uUAAAAC/coding-anime.gif" width="400"/>
-
-</div>
+      - name: push github-contribution-grid-snake.svg to the output branch
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
