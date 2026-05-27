@@ -28,6 +28,9 @@
 <p align="center">
   <img src="https://wttr.in/Fuzhou.png?format=3" />
 </p>
+---
+
+
 ## 🔥 连续提交记录
 
 <p align="center">
