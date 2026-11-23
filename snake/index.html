@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Great-Hyw 的贡献蛇 · 悬停查看每天提交次数</title>
+<meta name="description" content="把鼠标停在贡献蛇的任意格子上，显示那一天有几次提交。" />
+<meta name="color-scheme" content="dark light" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --accent: #7aa2f7;
+    --accent-2: #bb9af7;
+    --hot: #f7768e;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #ffffff;
+      --panel: #f6f8fa;
+      --border: #d0d7de;
+      --text: #1f2328;
+      --muted: #57606a;
+      --accent: #2f6feb;
+      --accent-2: #8250df;
+      --hot: #cf222e;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC",
+      "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 32px 16px 56px;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 18px; }
+  h1 {
+    font-size: 22px;
+    font-weight: 650;
+    margin: 0 0 6px;
+    letter-spacing: 0.2px;
+  }
+  h1 a { color: var(--accent); text-decoration: none; }
+  h1 a:hover { text-decoration: underline; }
+  .hint { margin: 0; color: var(--muted); font-size: 14px; }
+
+  #stage {
+    position: relative;
+    margin: 22px auto 12px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel);
+    overflow-x: auto;
+  }
+  #stage svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 880px;
+    margin: 0 auto;
+    overflow: visible;
+  }
+  /* 悬停：其它格子变淡，当前格子高亮 */
+  #stage svg rect.c {
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+    pointer-events: all;
+  }
+  #stage svg.hovering rect.c { opacity: 0.35; }
+  #stage svg rect.c.on {
+    opacity: 1 !important;
+    stroke: var(--hot);
+    stroke-width: 2px;
+  }
+  #stage svg rect.c.today {
+    stroke: var(--accent);
+    stroke-width: 1.5px;
+  }
+  #stage svg rect.c.on.today { stroke: var(--hot); }
+
+  .panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px 18px;
+    min-height: 30px;
+    margin: 4px auto 10px;
+    text-align: center;
+  }
+  .panel-date { font-weight: 650; font-size: 16px; }
+  .panel-date .hot { color: var(--accent-2); }
+  .panel-meta { color: var(--muted); font-size: 14px; }
+  .legend {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .legend b { color: var(--text); font-weight: 600; }
+  .legend .swatch {
+    display: inline-block;
+    width: 11px; height: 11px;
+    margin: 0 2px -1px;
+    border-radius: 2px;
+    background: var(--accent);
+    vertical-align: baseline;
+  }
+  #error {
+    display: none;
+    margin: 0 0 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #5c2b2b;
+    background: rgba(248, 81, 73, 0.12);
+    color: #ffb3b8;
+    font-size: 13px;
+    text-align: center;
+  }
+  #loading { text-align: center; color: var(--muted); padding: 42px 0; }
+
+  #tip {
+    position: fixed;
+    z-index: 99;
+    left: 0; top: 0;
+    max-width: min(78vw, 340px);
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.45;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  #tip .tip-n { color: var(--accent); font-weight: 700; }
+
+  footer {
+    margin-top: 30px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><a href="https://github.com/Great-Hyw">Great-Hyw</a> 的贡献蛇</h1>
+    <p class="hint">把鼠标停在任意格子上 → 显示「日期 + 当天提交次数」</p>
+  </header>
+
+  <div id="error"></div>
+  <div id="stage"><div id="loading">正在加载贡献蛇…</div></div>
+
+  <div class="panel">
+    <div class="panel-date" id="panelDate">悬停任意格子查看</div>
+    <div class="panel-meta" id="panelMeta"></div>
+  </div>
+
+  <div class="legend">
+    一格 = 一天 · 共 <b id="cellCount">–</b> 天 · 合计 <b id="totalCount">–</b> 次提交
+    · 活跃 <b id="activeCount">–</b> 天 · 当前连续 <b id="streakCount">–</b> 天
+    <br />
+    数据更新于 <span id="updated">–</span> · 颜色越亮 = 当天提交越多
+  </div>
+
+  <footer>
+    <a href="https://github.com/Great-Hyw">← 回到 GitHub 主页</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/Great-Hyw/Great-Hyw">页面源码</a>
+    <br />
+    <sub>蛇本体是 Platane/snk 生成的 SVG，由 GitHub Actions 每 12 小时刷新一次；本页把每天次数叠上去。</sub>
+  </footer>
+</div>
+
+<div id="tip" role="tooltip" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── 配置 ────────────────────────────────────────────────────────
+  var USER = 'Great-Hyw';
+  var SVG_BASE = 'https://cdn.jsdelivr.net/gh/' + USER + '/' + USER + '@output/';
+  var SRC = {
+    dark: SVG_BASE + 'github-contribution-grid-snake-dark.svg',
+    light: SVG_BASE + 'github-contribution-grid-snake.svg'
+  };
+  var DATA_URL = './data.json';
+
+  var WEEKDAY_CN = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  var PALETTE = {
+    dark: ['#161b22', '#01311f', '#034525', '#0f6d31', '#00c647'],
+    light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']
+  };
+  // 和 snk 一致：12×12 的格子，16px 间距，左上留 2px
+  var PITCH = 16, SIZE = 12, ORIGIN = 2;
+
+  var stage = document.getElementById('stage');
+  var errorBox = document.getElementById('error');
+  var tip = document.getElementById('tip');
+  var panelDate = document.getElementById('panelDate');
+  var panelMeta = document.getElementById('panelMeta');
+  var $cellCount = document.getElementById('cellCount');
+  var $totalCount = document.getElementById('totalCount');
+  var $activeCount = document.getElementById('activeCount');
+  var $streakCount = document.getElementById('streakCount');
+  var $updated = document.getElementById('updated');
+
+  var darkMQ = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+  var cells = [];        // { rect, date, count }
+  var hovered = null;    // 当前高亮格子
+  var pinned = null;     // 触屏点选的格子
+  var svgEl = null;
+  var data = null;       // { user, today, generatedAt, counts }
+  var hideTimer = 0;
+
+  // ── 工具函数 ────────────────────────────────────────────────────
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+  function isoOf(d) {
+    return d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate());
+  }
+
+  function parseIso(s) {
+    var p = s.split('-');
+    return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+  }
+
+  function addDays(d, n) {
+    var x = new Date(d.getTime());
+    x.setUTCDate(x.getUTCDate() + n);
+    return x;
+  }
+
+  function localTodayUtc() {
+    var now = new Date();
+    return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+  }
+
+  function weekdayCn(d) { return WEEKDAY_CN[d.getUTCDay()]; }
+
+  function isoDay(n) {
+    return n + ' 次提交';
+  }
+
+  // ── 数据 ────────────────────────────────────────────────────────
+  function loadData() {
+    return fetch(DATA_URL, { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .catch(function (err) {
+        console.warn('[snake] data.json 加载失败，格子将不带次数：', err);
+        return null;
+      });
+  }
+
+  function countOf(date) {
+    if (!data || !data.counts) return undefined;
+    var key = isoOf(date);
+    return Object.prototype.hasOwnProperty.call(data.counts, key)
+      ? data.counts[key]
+      : undefined;
+  }
+
+  // ── 载入 SVG（inline 注入，动画才能跑起来）──────────────────────
+  function pickVariant() {
+    return (darkMQ && darkMQ.matches) ? 'dark' : 'light';
+  }
+
+  function fetchSvgText(url) {
+    // 加时间戳，避免 CDN 缓存了旧一天的蛇
+    var bust = url + (url.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now();
+    return fetch(bust, { cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    });
+  }
+
+  function loadSvg() {
+    var first = pickVariant();
+    var second = first === 'dark' ? 'light' : 'dark';
+    return fetchSvgText(SRC[first])
+      .catch(function () { return fetchSvgText(SRC[second]); })
+      .then(function (text) {
+        text = text.replace(/^[\s\S]*?(<svg\b)/i, '$1');
+        stage.innerHTML = text;
+        svgEl = stage.querySelector('svg');
+        if (!svgEl) throw new Error('返回内容不是 SVG');
+        svgEl.style.width = '100%';
+        svgEl.style.height = 'auto';
+      });
+  }
+
+  // ── 建立「格子 → 日期」映射 ────────────────────────────────────
+  // snk 的格子按列优先（index = col*7 + row，row0 = 周日）排列，
+  // 最后一格永远是今天，因此 date(i) = today - (N-1-i)。
+  function alignToday(list, seedToday) {
+    var n = list.length;
+    if (!n) return seedToday;
+    var lastRow = (n - 1) % 7;
+    var candidate = seedToday;
+    for (var shift = 0; shift < 4; shift++) {
+      var d = addDays(seedToday, -shift);
+      if ((d.getUTCDay() % 7) === lastRow) return d;
+    }
+    return candidate;
+  }
+
+  function mapCells() {
+    var rects = Array.prototype.slice.call(svgEl.querySelectorAll('rect.c'));
+    var seed = data && data.today ? parseIso(data.today) : localTodayUtc();
+    var today = alignToday(rects, seed);
+    var n = rects.length;
+    cells = rects.map(function (rect, i) {
+      var date = addDays(today, i - (n - 1));
+      return { rect: rect, date: date, count: countOf(date) };
+    });
+    cells.forEach(function (c) {
+      c.rect.classList.add('c');
+      if (isoOf(c.date) === isoOf(today)) c.rect.classList.add('today');
+    });
+    return { today: today, n: n };
+  }
+
+  // ── 兜底：自己画一张日历（CDN 挂了也能悬停）────────────────────
+  function drawFallback(today) {
+    stage.innerHTML = '';
+    var ns = 'http://www.w3.org/2000/svg';
+    var cols = 53;
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '-16 -32 880 192');
+    svg.setAttribute('role', 'img');
+    svg.style.width = '100%';
+    svg.style.height = 'auto';
+    var palette = PALETTE[pickVariant()];
+
+    // 第一列的周日 = 今天前推 52 周 + 今天所在星期
+    var firstSunday = addDays(today, -(52 * 7 + today.getUTCDay()));
+    var total = 0;
+    for (var col = 0; col < cols; col++) {
+      for (var row = 0; row < 7; row++) {
+        var date = addDays(firstSunday, col * 7 + row);
+        if (date.getTime() > today.getTime()) continue;
+        var count = countOf(date);
+        var level = !count ? 0 : count < 3 ? 1 : count < 6 ? 2 : count < 10 ? 3 : 4;
+        var rect = document.createElementNS(ns, 'rect');
+        rect.setAttribute('x', ORIGIN + col * PITCH);
+        rect.setAttribute('y', ORIGIN + row * PITCH);
+        rect.setAttribute('width', SIZE);
+        rect.setAttribute('height', SIZE);
+        rect.setAttribute('rx', 2);
+        rect.setAttribute('class', 'c');
+        rect.setAttribute('fill', palette[level]);
+        svg.appendChild(rect);
+        if (count) total += count;
+      }
+    }
+    stage.appendChild(svg);
+    svgEl = svg;
+    return total;
+  }
+
+  // ── 悬停提示 ────────────────────────────────────────────────────
+  function showTip(cell, ev) {
+    var d = cell.date;
+    var text = isoOf(d) + '（' + weekdayCn(d) + '）· ';
+    tip.innerHTML = text + (cell.count == null
+      ? '无数据'
+      : '<span class="tip-n">' + cell.count + '</span> 次提交');
+    tip.hidden = false;
+    positionTip(ev);
+  }
+
+  function positionTip(ev) {
+    if (!ev || typeof ev.clientX !== 'number') return;
+    var pad = 14;
+    var w = tip.offsetWidth, h = tip.offsetHeight;
+    var x = ev.clientX + pad, y = ev.clientY + pad;
+    if (x + w > window.innerWidth - 8) x = ev.clientX - w - pad;
+    if (y + h > window.innerHeight - 8) y = ev.clientY - h - pad;
+    if (x < 8) x = 8;
+    if (y < 8) y = 8;
+    tip.style.left = x + 'px';
+    tip.style.top = y + 'px';
+  }
+
+  function highlight(cell) {
+    if (hovered === cell) return;
+    if (hovered) hovered.rect.classList.remove('on');
+    hovered = cell;
+    if (cell) {
+      cell.rect.classList.add('on');
+      if (svgEl) svgEl.classList.add('hovering');
+      updatePanel(cell);
+    } else {
+      if (svgEl) svgEl.classList.remove('hovering');
+      updatePanel(null);
+    }
+  }
+
+  function updatePanel(cell) {
+    if (!cell) {
+      panelDate.textContent = '悬停任意格子查看';
+      panelMeta.textContent = '';
+      return;
+    }
+    var d = cell.date;
+    panelDate.innerHTML = isoOf(d) + '（' + weekdayCn(d) + '）';
+    panelMeta.textContent = cell.count == null
+      ? '这一天暂无数据'
+      : (cell.count === 0
+        ? '这天没有提交'
+        : '这天提交了 ' + cell.count + ' 次');
+  }
+
+  function bindCells() {
+    var triggers = { pointerenter: 1, mousemove: 0 };
+    cells.forEach(function (cell) {
+      var rect = cell.rect;
+      rect.addEventListener('pointerenter', function (ev) {
+        clearTimeout(hideTimer);
+        highlight(cell);
+        showTip(cell, ev);
+      });
+      rect.addEventListener('pointermove', function (ev) {
+        if (!tip.hidden) positionTip(ev);
+      });
+      rect.addEventListener('pointerleave', function () {
+        if (pinned === cell) return;
+        tip.hidden = true;
+        highlight(null);
+      });
+      // 触屏：点一下也能看（再点空白/别处消失）
+      rect.addEventListener('pointerdown', function (ev) {
+        if (ev.pointerType === 'mouse') return;
+        pinned = cell;
+        highlight(cell);
+        showTip(cell, ev);
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(function () {
+          if (pinned === cell) { pinned = null; tip.hidden = true; }
+        }, 2600);
+      });
+    });
+    document.addEventListener('pointerdown', function (ev) {
+      if (ev.target && ev.target.closest && ev.target.closest('#stage')) return;
+      pinned = null;
+      tip.hidden = true;
+      highlight(null);
+    });
+  }
+
+  // ── 统计条 ──────────────────────────────────────────────────────
+  function updateStats(today) {
+    var total = 0, active = 0, best = 0, bestDay = null;
+    var known = 0;
+    cells.forEach(function (c) {
+      if (c.count == null) return;
+      known++;
+      total += c.count;
+      if (c.count > 0) active++;
+      if (c.count > best) { best = c.count; bestDay = c.date; }
+    });
+    // 当前连续：从今天往回数，连续 count>0 的天数（今天 0 次时从昨天开始数）
+    var streak = 0;
+    var cursor = today;
+    if (countOf(cursor) === 0) cursor = addDays(cursor, -1);
+    for (var i = 0; i < 400; i++) {
+      var c = countOf(cursor);
+      if (!c) break;
+      streak++;
+      cursor = addDays(cursor, -1);
+    }
+    $cellCount.textContent = known || cells.length;
+    $totalCount.textContent = total;
+    $activeCount.textContent = active;
+    $streakCount.textContent = streak;
+    if (bestDay) panelMeta.textContent = panelMeta.textContent.trim() ||
+      ('最佳一天：' + isoOf(bestDay) + '（' + best + ' 次）');
+    if (data && data.generatedAt) {
+      var t = new Date(data.generatedAt);
+      $updated.textContent = isNaN(t.getTime())
+        ? data.generatedAt
+        : t.getFullYear() + '-' + pad2(t.getMonth() + 1) + '-' + pad2(t.getDate()) +
+          ' ' + pad2(t.getHours()) + ':' + pad2(t.getMinutes()) + '（本地时间）';
+    }
+  }
+
+  function fail(msg) {
+    errorBox.style.display = 'block';
+    errorBox.textContent = msg;
+  }
+
+  // ── 启动 ────────────────────────────────────────────────────────
+  function boot() {
+    Promise.all([loadData(), loadSvg().then(function () { return true; })
+      .catch(function (err) {
+        console.warn('[snake] SVG 加载失败：', err);
+        return false;
+      })])
+      .then(function (res) {
+        data = res[0];
+        var ok = res[1];
+        var seed = data && data.today ? parseIso(data.today) : localTodayUtc();
+        if (!ok) {
+          fail('贡献蛇图片加载失败（jsDelivr 可能被网络拦截），已切换为手绘日历 —— 悬停功能仍然可用。');
+          drawFallback(seed);
+        }
+        var info = mapCells();
+        bindCells();
+        updateStats(info.today);
+        if (!data) {
+          fail('data.json 还没生成（第一次运行 Action 后会自动出现）。当前格子暂时没有次数。');
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        fail('页面初始化失败：' + err.message + '（刷新试试）');
+      });
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

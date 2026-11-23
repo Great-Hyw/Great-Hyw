@@ -23,6 +23,8 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
+import os
 import re
 import sys
 import time
@@ -174,6 +176,28 @@ def build_table(days: dict[str, tuple[str, int, int]], weeks: int) -> str:
     return table + "\n\n" + legend
 
 
+def write_json(path: str, user: str, days: dict[str, tuple[str, int, int]], today: dt.date) -> None:
+    """导出 snake/index.html 用的数据：{"user","today","generatedAt","counts"}"""
+    counts: dict[str, int] = {}
+    for date, (_cid, _level, count) in days.items():
+        counts[date] = count if count is not None and count >= 0 else 0
+    payload = {
+        "user": user,
+        "today": today.isoformat(),
+        "generatedAt": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+        "counts": dict(sorted(counts.items())),
+    }
+    folder = os.path.dirname(path)
+    if folder:
+        os.makedirs(folder, exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
+        fh.write("\n")
+    os.replace(tmp, path)
+    print(f"[info] 已写入 {path}（{len(counts)} 天）")
+
+
 def replace_block(text: str, body: str) -> str:
     if START_MARK not in text or END_MARK not in text:
         raise SystemExit(
@@ -190,6 +214,12 @@ def main() -> int:
     ap.add_argument("--user", default=USER)
     ap.add_argument("--readme", default=README)
     ap.add_argument("--weeks", type=int, default=13)
+    ap.add_argument(
+        "--json",
+        default="",
+        metavar="PATH",
+        help="同时导出交互页面用的数据（建议 snake/data.json）",
+    )
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -211,6 +241,10 @@ def main() -> int:
 
     if args.dry_run:
         return 0
+
+    if args.json:
+        today = dt.date.fromisoformat(max(days))
+        write_json(args.json, args.user, days, today)
 
     with open(args.readme, encoding="utf-8") as fh:
         old = fh.read()

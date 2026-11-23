@@ -1,6 +1,7 @@
 name: Update contribution calendar
 
-# 每天刷新 README 里「提交日历」区块（可悬停的 HTML 表格）。
+# 每天刷新 README 里「提交日历」区块（可悬停的 HTML 表格），
+# 同时导出 snake/data.json 给交互页 snake/index.html 用。
 # 需要把本文件放到仓库的 .github/workflows/ 目录下，脚本放到 scripts/ 目录下。
 on:
   schedule:
@@ -9,6 +10,10 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: update-contribution-calendar
+  cancel-in-progress: false
 
 jobs:
   update-calendar:
@@ -21,16 +26,16 @@ jobs:
           python-version: "3.12"
 
       - name: Generate hoverable contribution calendar
-        run: python scripts/contrib_calendar.py
+        run: python scripts/contrib_calendar.py --json snake/data.json
 
-      - name: Commit README changes
+      - name: Commit README + snake data
         run: |
-          if git diff --quiet -- README.md; then
-            echo "README 无变化，跳过提交"
+          if git diff --quiet -- README.md snake/data.json; then
+            echo "没有变化，跳过提交"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md
+          git add README.md snake/data.json
           git commit -m "chore: update contribution calendar"
           git push
