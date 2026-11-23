@@ -25,7 +25,7 @@
 
 <!-- ── 动态打字 ─────────────────────────────────────────────── -->
 <div align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=620&height=42&lines=Hi%2C+I%27m+Huang+Youwei;Vue+3+%C2%B7+Spring+Boot+%C2%B7+Cloudflare;I+build+things+that+feel+alive;Keep+learning%2C+keep+shipping" alt="typing" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=620&height=42&lines=Hi%2C+I%27m+Huang+Youwei;Vue+3+%C2%B7+Spring+Boot+%C2%B7+Git;I+build+things+that+feel+alive;Keep+learning%2C+keep+shipping" alt="typing" />
 </div>
 
 <!-- ── 状态徽章 ─────────────────────────────────────────────── -->
