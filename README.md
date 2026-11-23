@@ -45,10 +45,8 @@
 
 - 🔭 **此刻在做**：[Lover_Days](https://github.com/Great-Hyw/Lover_Days) —— 记录每一个值得纪念的日子 ❤️
 - 🧩 **技术坐标**：Vue 3 前端 × Spring Boot 后端 × Cloudflare 部署
-- 🌱 **正在研究**：顺滑的交互体验 · AI 小工具 · GitHub Actions 自动化
-- 🌤️ **特别爱好**：天气数据（本页天气由 Actions 定时更新，见下方）
 - ⚡ **一点偏执**：能自动化的绝不手动，能写清楚的绝不糊弄
-- 💬 **欢迎交流**：Vue / Java / 校园项目 / 部署踩坑
+- 💬 **欢迎交流**：Vue / Java / 
 
 ---
 
