@@ -1,0 +1,36 @@
+name: Update contribution calendar
+
+# 每天刷新 README 里「提交日历」区块（可悬停的 HTML 表格）。
+# 需要把本文件放到仓库的 .github/workflows/ 目录下，脚本放到 scripts/ 目录下。
+on:
+  schedule:
+    - cron: "0 1 * * *" # 每天 01:00 UTC = 北京时间 09:00
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-calendar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate hoverable contribution calendar
+        run: python scripts/contrib_calendar.py
+
+      - name: Commit README changes
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README 无变化，跳过提交"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: update contribution calendar"
+          git push
