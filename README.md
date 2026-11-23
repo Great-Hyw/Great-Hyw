@@ -1,20 +1,19 @@
 <!--
-  ╔══════════════════════════════════════════════════════════════════╗
-  ║  Great-Hyw · GitHub Profile README                                ║
-  ║  Theme: Tokyo Night — #1a1b27 / #7aa2f7 / #bb9af7 / #7dcfff        ║
-  ╠══════════════════════════════════════════════════════════════════╣
-  ║  维护提示                                                         ║
-  ║  · 全站统一 tokyonight 配色，想换主题时全局替换即可               ║
-  ║  · 天气区块由 GitHub Actions 自动写入，请勿删除 START/END 标记     ║
-  ║  · 提交日历由 .github/workflows/contrib-calendar.yml 每天自动刷新 ║
-  ║    （脚本 scripts/contrib_calendar.py；改周数：--weeks 20）        ║
-  ║  · 「可悬停的蛇」是独立静态页 snake/，需开 GitHub Pages 才能访问   ║
-  ║    Settings → Pages → Deploy from a branch → main / (root)         ║
-  ║    页面数据由同一个 Action 写进 snake/data.json                    ║
-  ║  · 数据卡片用官方公共实例；不要加 include_all_commits/count_private ║
-  ║    （无 token 时会报 "Could not fetch total commits"）             ║
-  ║  · 若卡片偶发加载失败，刷新即可；也可自建 Vercel 实例替换域名      ║
-  ╚══════════════════════════════════════════════════════════════════╝
+  Great-Hyw · GitHub Profile README
+  Theme: Tokyo Night — #1a1b27 / #7aa2f7 / #bb9af7 / #7dcfff
+
+  维护提示
+  · 全站统一 tokyonight 配色，想换主题时全局替换即可
+  · 天气区块：.github/workflows/weather.yml + scripts/weather.py（Open-Meteo，免费无 Key），
+    每天北京时间 07:00 / 19:00 自动刷新；换城市改 workflow 里的 --city / --lat / --lon，
+    README 里的 START/END 标记不要删
+  · 提交日历：.github/workflows/contrib-calendar.yml + scripts/contrib_calendar.py，
+    每天自动刷新；想显示 20 周就加 --weeks 20
+  · 「可悬停的蛇」是独立静态页 snake/，需开 GitHub Pages 才能访问：
+    Settings → Pages → Deploy from a branch → main / (root)；
+    页面数据由同一个 Action 写进 snake/data.json
+  · 数据卡片用官方公共实例；不要加 include_all_commits / count_private（无 token 会报错）
+  · 若卡片偶发加载失败，刷新即可；也可自建 Vercel 实例替换域名
 -->
 
 <!-- ── 顶部横幅 ─────────────────────────────────────────────── -->
@@ -122,8 +121,20 @@
 
 ## 🌤 今日天气 · Weather
 
-<!-- ⚠️ 下面这一行由 GitHub Actions 定时写入，请勿删除 START/END 标记 -->
-<!--START_SECTION:weather--><!--END_SECTION:weather-->
+<!--
+  ⚠️ 下面这一块由 GitHub Actions 自动写入，请勿删除 START/END 标记。
+  工作流：.github/workflows/weather.yml（脚本 scripts/weather.py）
+  数据源：Open-Meteo（免费、无需 API Key）· 每天北京时间 07:00 / 19:00 各刷新一次
+  换城市：改 weather.yml 里的 --city / --lat / --lon 即可
+-->
+<!--START_SECTION:weather-->
+
+<div align="center">
+  <b>☁️ 南昌 · 阴 12.6℃</b><br />
+  <sub>体感 12℃　·　湿度 92%　·　风 2 级（8 km/h）　·　今日 9~16℃　·　降水概率 63%　·　更新于 2026-11-24 00:15</sub>
+</div>
+
+<!--END_SECTION:weather-->
 
 ---
 

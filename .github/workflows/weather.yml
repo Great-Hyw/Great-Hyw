@@ -1,0 +1,52 @@
+name: Update weather
+
+# 每天两次把「今日天气」写进 README（北京时间 07:00 与 19:00）。
+# 数据来自 Open-Meteo：免费、无 API Key、HTTPS。
+# 把本文件放到仓库 .github/workflows/ 下，脚本放到 scripts/weather.py。
+on:
+  schedule:
+    - cron: "0 23 * * *" # 23:00 UTC = 北京时间 07:00
+    - cron: "0 11 * * *" # 11:00 UTC = 北京时间 19:00
+  workflow_dispatch: # 也可以在 Actions 页面手动点一下立即刷新
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-weather
+  cancel-in-progress: false
+
+jobs:
+  update-weather:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch weather and update README
+        # 换城市：把 --city/--lat/--lon 改成你的城市（经纬度见 open-meteo.com 的 Geocoding）
+        run: python scripts/weather.py --city 南昌 --lat 28.682 --lon 115.858
+
+      - name: Commit README changes
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README 无变化，跳过提交"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: update weather"
+          # 和「提交日历」工作流可能同时改 README，push 冲突就 rebase 重试
+          for i in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "push 失败，rebase 后重试（$i/3）"
+            git pull --rebase --autostash origin main || true
+          done
+          echo "push 重试仍失败" >&2
+          exit 1
